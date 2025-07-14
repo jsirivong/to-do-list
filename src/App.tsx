@@ -7,7 +7,7 @@ import './App.css'
 import Summary from './components/todosummary';
 
 export default function App(){
-  const [ todos, setTodos ] = useState<Item[]>(dummyData); // "<Item[]>"" not necessary as typescript can infer the type
+  const [ todos, setTodos ] = useState<Item[]>(dummyData); // "<Item[]>" not necessary as typescript can infer the type
   // you can explicity state the type in arrow brackets as useState is a generic function/hook
 
   const handleChange = (id: number, completed: boolean): void => {
@@ -26,7 +26,7 @@ export default function App(){
     setTodos((preivousTodos) => (preivousTodos.filter(value => !value.completed)))
   }
 
-  const handleSubmit = (input: string) => { // you have to explicitly state the type of the event object since we declared a separate function
+  const handleSubmit = (input: string) => { 
         if (!input.trim()) return; // an empty string is considered a falsy value
 
         setTodos((previousTodos) => [...previousTodos, // when we use a setState, we are able to get the previous state value before changing it
