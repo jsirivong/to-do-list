@@ -18,7 +18,7 @@ export default function App(){
   const handleDelete = (id: number): void => {
     setTodos((previousTodos) => previousTodos.filter((value) => value.id !== id)); // elements whose value.id aren't equal to the target id will stay in the shallow copy
     //.filter() creates a new array full of elements that pass the given test (i.e. value.id != id)
-    // the callback function must return true; elements that are true will stay in the array, while those that are false will be "filtered" out of the array
+    // the callback function must return true or false; elements that are true will stay in the array, while those that are false will be "filtered" out of the array
   }
 
   const handleSubmit = (input: string) => { // you have to explicitly state the type of the event object since we declared a separate function
