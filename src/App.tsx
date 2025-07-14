@@ -15,6 +15,12 @@ export default function App(){
     ))
   } 
 
+  const handleDelete = (id: number): void => {
+    setTodos((previousTodos) => previousTodos.filter((value) => value.id !== id)); // elements whose value.id aren't equal to the target id will stay in the shallow copy
+    //.filter() creates a new array full of elements that pass the given test (i.e. value.id != id)
+    // the callback function must return true; elements that are true will stay in the array, while those that are false will be "filtered" out of the array
+  }
+
   const handleSubmit = (input: string) => { // you have to explicitly state the type of the event object since we declared a separate function
         if (!input.trim()) return; // an empty string is considered a falsy value
 
@@ -28,12 +34,13 @@ export default function App(){
     }
 
   return (
-    <div>
-      <h1 className='text-center text-white font-bold py-28 text-5xl'>Your To-Do List</h1>
+    <div className='overflow-y-auto'>
+      <h1 className='text-center text-white font-bold pt-28 pb-3 text-5xl'>To-Do List</h1>
+      <p className='text-center text-white font-bold text-2xl pb-20'>Your convenient list.</p>
 
       <div className='max-w-lg mx-auto'>
         <Input handleSubmit={handleSubmit}/>
-        <TodoList/>
+        {todos.length === 0 ? <p className='text-center text-white font-bold p-5'>Empty List. Start by adding one.</p> : <TodoList todos={todos} handleChange={handleChange} handleDelete={handleDelete}/>}
       </div>
     </div>
   )
