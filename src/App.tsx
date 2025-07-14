@@ -4,6 +4,7 @@ import TodoList from './components/todolist';
 import Input from './components/input'
 import type Item from './types/todo' // type import, don't forget to add the "type" keyword
 import './App.css'
+import Summary from './components/todosummary';
 
 export default function App(){
   const [ todos, setTodos ] = useState<Item[]>(dummyData); // "<Item[]>"" not necessary as typescript can infer the type
@@ -21,12 +22,16 @@ export default function App(){
     // the callback function must return true or false; elements that are true will stay in the array, while those that are false will be "filtered" out of the array
   }
 
+  const deleteAllCompleted = () => {
+    setTodos((preivousTodos) => (preivousTodos.filter(value => !value.completed)))
+  }
+
   const handleSubmit = (input: string) => { // you have to explicitly state the type of the event object since we declared a separate function
         if (!input.trim()) return; // an empty string is considered a falsy value
 
         setTodos((previousTodos) => [...previousTodos, // when we use a setState, we are able to get the previous state value before changing it
           {
-            id: previousTodos.length + 1,
+            id: Date.now(),
             title: input,
             completed: false,
           }  
@@ -40,8 +45,9 @@ export default function App(){
 
       <div className='max-w-lg mx-auto'>
         <Input handleSubmit={handleSubmit}/>
-        {todos.length === 0 ? <p className='text-center text-white font-bold p-5'>Empty List. Start by adding one.</p> : <TodoList todos={todos} handleChange={handleChange} handleDelete={handleDelete}/>}
+        {todos.length === 0 ? <p className='text-center text-white font-bold p-5'>Empty list. Start by adding one.</p> : <TodoList todos={todos} handleChange={handleChange} handleDelete={handleDelete}/>}
       </div>
+      {todos.length > 0 && <Summary todos={todos} deleteAllCompleted={deleteAllCompleted}/>}
     </div>
   )
 }
