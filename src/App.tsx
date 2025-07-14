@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dummyData } from './services/todos'
 import TodoList from './components/todolist';
 import Input from './components/input'
@@ -7,8 +7,18 @@ import './App.css'
 import Summary from './components/todosummary';
 
 export default function App(){
-  const [ todos, setTodos ] = useState<Item[]>(dummyData); // "<Item[]>" not necessary as typescript can infer the type
+  const [ todos, setTodos ] = useState<Item[]>(() => {
+    const savedList: Item[] = JSON.parse(localStorage.getItem("todos") || "[]") //JSON.parse() turns a JSON string back into an object
+
+    return savedList.length > 0 ? savedList : dummyData;
+  }); // "<Item[]>" not necessary as typescript can infer the type
   // you can explicity state the type in arrow brackets as useState is a generic function/hook
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos)); // localStorage is a way to save data on the browser
+    // it saves data in the form of key-value pairs
+    // it can only save the key and values as strings, so we must turn the "todos" object into a JSON string using JSON.stringify() 
+  }, [todos])
 
   const handleChange = (id: number, completed: boolean): void => {
     setTodos((previousTodo) => previousTodo.map( // the map function returns a completely new array
